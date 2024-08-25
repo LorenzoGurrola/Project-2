@@ -8,7 +8,7 @@ if True:
     import sys
     sys.path.insert(
         0, 'C:/Users/Lorenzo/Desktop/Workspace/Github/Project-2/src')
-    from train_model import initialize_params, forward_prop, calculate_cost, back_prop
+    from train_model import initialize_params, forward_prop, calculate_cost, back_prop, sigmoid
 
 
 class test_forward_and_back_prop(unittest.TestCase):
@@ -27,7 +27,8 @@ class test_forward_and_back_prop(unittest.TestCase):
         x = torch.tensor(x)
         y = torch.tensor(y)
         w, b = torch.tensor(params['w'], requires_grad=True), torch.tensor(params['b'], requires_grad=True)
-        yhat = x @ w + b
+        z = x @ w + b
+        yhat = 1/(1 + torch.exp(-z))
         losses = (y * torch.log(yhat)) + ((1 - y) * torch.log(1 - yhat))
         cost = -torch.sum(losses, dim=0, keepdims=True)/m
         cost.backward()
